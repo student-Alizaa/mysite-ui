@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'any' }
+    agent { label 'master' }
 
     environment {
         USERNAME = "alizamangi"
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 sh '''
                     rsync -avz --exclude ".git/" --exclude "Jenkinsfile" ${WORKSPACE}/ ${USERNAME}@${SERVER}:${DEPLOY_PATH}/
-                    ssh -o StrictHostKeyChecking=no ${USERNAME}@${SERVER} "sudo systemctl restart apache2"
+                    ssh ${USERNAME}@${SERVER} "sudo systemctl restart apache2"
                 '''
             }
         }
