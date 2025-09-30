@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Contact Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(17,18,52,0.2) 0%, rgba(62,58,109,0.3) 50%, rgba(245,237,140,0.2) 100%);
+            background-size: 300% 300%;
+            animation: bgShift 25s ease infinite;
+            color: #1E1E2C;
+            padding: 20px;
+            transition: background .3s ease;
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(62,58,109,0.2);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(17,18,52,0.08);
+            transition: transform .3s, box-shadow .3s;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.3s;
+            overflow: hidden;
+        }
+
+        .container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(17,18,52,0.15);
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        header {
+            background: linear-gradient(135deg, #112034, #3E3A6D);
+            color: white;
+            padding: 40px 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+
+        h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #F5ED8C, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 5s ease infinite;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes textShimmer {
+            0%, 100% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-content {
+            padding: 50px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid rgba(62,58,109,0.2);
+            border-radius: 15px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.9);
+            transition: all .3s ease;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:hover,
+        .form-group textarea:hover {
+            border-color: rgba(62,58,109,0.4);
+            transform: translateY(-1px);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #3E3A6D;
+            box-shadow: 0 0 0 3px rgba(245,237,140,0.3), 0 0 8px rgba(62,58,109,0.4), 0 5px 15px rgba(62,58,109,0.1);
+            transform: translateY(-1px);
+            background: rgba(255,255,255,1);
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 20px;
+            top: 18px;
+            color: rgba(62,58,109,0.6);
+            pointer-events: none;
+            transition: 0.2s ease all;
+            font-size: 16px;
+            background: #ffffff;
+            padding: 0 5px;
+        }
+
+        .form-group input:not(:placeholder-shown) + label,
+        .form-group input:focus + label,
+        .form-group textarea:not(:placeholder-shown) + label,
+        .form-group textarea:focus + label {
+            top: -10px;
+            font-size: 13px;
+            color: #3E3A6D;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #bf1922;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: #bf1922 !important;
+            animation: shake .5s ease-in-out !important;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) }
+            25% { transform: translateX(-5px) }
+            75% { transform: translateX(5px) }
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 20px 50px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .submit-wrapper {
+            overflow: hidden;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        button {
+            position: relative;
+            background: linear-gradient(135deg, #112034, #3E3A6D);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            width: 100%;
+            cursor: pointer;
+            transition: all .3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #0E1A2B, #2F2C58);
+            box-shadow: 0 10px 25px rgba(17,18,52,0.2);
+            transform: translateY(-2px);
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 10px rgba(62,58,109,0.2); }
+            to { box-shadow: 0 0 20px rgba(62,58,109,0.4); }
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245,237,140,0.4), transparent);
+            transition: left .6s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid #F5ED8C;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        button.loading .btn-text {
+            opacity: 0;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg) }
+            100% { transform: translate(-50%, -50%) rotate(360deg) }
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0;
+            background: linear-gradient(90deg, #112034, #3E3A6D);
+            transition: width .3s ease;
+            z-index: 1000;
+        }
+
+        .toggle-theme-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .toggle-theme-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .toggle-theme-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .toggle-theme-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .toggle-theme-btn:active {
+            transform: scale(0.95);
+        }
+
+        
+        body.dark-mode {
+            background: linear-gradient(135deg, rgba(14,15,30,0.85) 0%, rgba(40,38,72,0.9) 100%);
+            color: #f0f0f0;
+        }
+
+        body.dark-mode .container {
+            background: rgba(17,18,52,0.95);
+            border-color: rgba(245,237,140,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background: rgba(30,30,44,0.95);
+            color: #fff;
+            border-color: rgba(245,237,140,0.2);
+        }
+
+        body.dark-mode .form-group label {
+            background: rgba(17,18,52,0.95);
+            color: rgba(245,237,140,0.8);
+        }
+
+        body.dark-mode .form-group input:focus + label,
+        body.dark-mode .form-group textarea:focus + label,
+        body.dark-mode .form-group input:not(:placeholder-shown) + label,
+        body.dark-mode .form-group textarea:not(:placeholder-shown) + label {
+            color: #F5ED8C;
+        }
+
+        
+        body.dark-mode button {
+            background: linear-gradient(135deg, #1E1E2E, #2D2B55);
+            color: #F5ED8C;
+            border: 1px solid rgba(245, 237, 140, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode button:hover {
+            background: linear-gradient(135deg, #252540, #3A3768);
+            box-shadow: 0 12px 30px rgba(245, 237, 140, 0.2);
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode button::before {
+            background: linear-gradient(90deg, transparent, rgba(245,237,140,0.3), transparent);
+        }
+
+        body.dark-mode button.loading::after {
+            border-top-color: #F5ED8C;
+        }
+
+        body.dark-mode .toggle-theme-btn {
+            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
+            box-shadow: 0 4px 15px rgba(45, 27, 105, 0.4);
+        }
+
+        body.dark-mode .toggle-theme-btn:hover {
+            transform: scale(1.1) rotate(-15deg);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        
+        @media (max-width: 500px) {
+            .container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+
+            header {
+                padding: 30px 25px 25px;
+            }
+
+            .form-content {
+                padding: 35px 25px;
+            }
+
+            h1 {
+                font-size: clamp(24px, 6vw, 36px);
+            }
+
+            button {
+                padding: 16px;
+                font-size: 16px;
+            }
+
+            .success-message {
+                padding: 15px 25px;
+            }
+
+            .toggle-theme-btn {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(62, 58, 109, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(62, 58, 109, 0.4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(62, 58, 109, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-theme-btn" id="themeToggle">
+        🌙
+    </button>
+
+    <div class="container">
+        <header>
+            <h1>Contact</h1>
+            <p class="subtitle">Let's discuss your project and explore how we can work together</p>
+        </header>
+
+        <div class="success-message" id="successMessage">
+            ✓ Thank you for your inquiry! We'll respond within 24 hours.
+        </div>
+
+        <div class="form-content">
+            <form id="contactForm">
+                <div class="form-group">
+                    <input type="text" id="fullName" name="fullName" placeholder=" " required />
+                    <label for="fullName">Full Name *</label>
+                    <div class="error-message" id="nameError">Please enter your full name</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder=" " required />
+                    <label for="email">Email Address *</label>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="subject" name="subject" placeholder=" " required />
+                    <label for="subject">Subject *</label>
+                    <div class="error-message" id="subjectError">Please enter a subject</div>
+                </div>
+
+                <div class="form-group">
+                    <textarea id="message" name="message" placeholder=" " required></textarea>
+                    <label for="message">Your Message *</label>
+                    <div class="error-message" id="messageError">Please enter your message</div>
+                </div>
+
+                <div class="submit-wrapper">
+                    <button type="submit" id="submitBtn">
+                        <span class="btn-text">Send Message</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="progressBar" class="progress-bar"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("contactForm");
+            const submitBtn = document.getElementById("submitBtn");
+            const progressBar = document.getElementById("progressBar");
+            const successMessage = document.getElementById("successMessage");
+            const themeToggle = document.getElementById("themeToggle");
+            const inputs = form.querySelectorAll("input, textarea");
+
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                themeToggle.textContent = isDark ? '☀️' : '🌙';
+
+                 try {
+                    localStorage.setItem('darkMode', isDark);
+                } catch(e) {
+                    console.log('Local storage not available');
+                }
+            });
+
+            
+            try {
+                if (localStorage.getItem('darkMode') === 'true') {
+                    document.body.classList.add('dark-mode');
+                    themeToggle.textContent = '☀️';
+                }
+            } catch(e) {
+                console.log('Local storage not available');
+            }
+
+            
+            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+            function clearErrors() {
+                document.querySelectorAll('.form-group').forEach(group => {
+                    group.classList.remove('error');
+                });
+            }
+
+            function showError(input, errorId, message) {
+                const formGroup = input.closest('.form-group');
+                const errorElement = document.getElementById(errorId);
+                formGroup.classList.add('error');
+                errorElement.textContent = message;
+
+                
+                if (!document.querySelector('.form-group.error input:focus, .form-group.error textarea:focus')) {
+                    input.focus();
+                }
+            }
+
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    const formGroup = input.closest('.form-group');
+                    if (formGroup.classList.contains('error')) {
+                        formGroup.classList.remove('error');
+                    }
+                });
+
+                input.addEventListener('blur', () => validateField(input));
+            });
+
+            function validateField(field) {
+                const value = field.value.trim();
+                const fieldName = field.name;
+
+                switch (fieldName) {
+                    case 'fullName':
+                        if (value.length < 2) {
+                            showError(field, 'nameError', 'Name must be at least 2 characters long');
+                            return false;
+                        }
+                        break;
+                    case 'email':
+                        if (!emailRegex.test(value)) {
+                            showError(field, 'emailError', 'Please enter a valid email address');
+                            return false;
+                        }
+                        break;
+                    case 'subject':
+                        if (value.length < 3) {
+                            showError(field, 'subjectError', 'Subject must be at least 3 characters long');
+                            return false;
+                        }
+                        break;
+                    case 'message':
+                        if (value.length < 10) {
+                            showError(field, 'messageError', 'Message must be at least 10 characters long');
+                            return false;
+                        }
+                        break;
+                }
+                return true;
+            }
+
+            
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                clearErrors();
+
+                
+                let isValid = true;
+                inputs.forEach(input => {
+                    if (!validateField(input)) {
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    return;
+                }
+
+               
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+
+                
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress = Math.min(progress + Math.random() * 15, 90);
+                    progressBar.style.width = progress + '%';
+                }, 100);
+
+                try {
+                    
+                    await new Promise(resolve => setTimeout(resolve, 2500));
+
+                   
+                    clearInterval(progressInterval);
+                    progressBar.style.width = '100%';
+
+                    
+                    setTimeout(() => {
+                        submitBtn.classList.remove('loading');
+                        submitBtn.disabled = false;
+                        progressBar.style.width = '0%';
+                        successMessage.classList.add('show');
+                        form.reset();
+
+                        
+                        successMessage.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+
+                        setTimeout(() => {
+                            successMessage.classList.remove('show');
+                        }, 6000);
+                    }, 500);
+
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    clearInterval(progressInterval);
+                    progressBar.style.width = '0%';
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                    alert('There was an error sending your message. Please try again.');
+                }
+            });
+
+           
+            inputs.forEach((input, index) => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && input.tagName !== 'TEXTAREA') {
+                        e.preventDefault();
+                        const nextInput = inputs[index + 1];
+                        if (nextInput) {
+                            nextInput.focus();
+                        } else {
+                            submitBtn.focus();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

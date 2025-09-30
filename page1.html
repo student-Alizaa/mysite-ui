@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkedIn-Style Sidebar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3f2ef;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #1c1c1c;
+      color: #e1e1e1;
+    }
+
+    .sidebar {
+      background-color: #fff;
+      width: 260px;
+      border-right: 1px solid #ddd;
+      transition: width 0.3s ease;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    body.dark-mode .sidebar {
+      background-color: #2c2c2c;
+      border-color: #444;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+    }
+
+    .toggle-btn {
+      position: absolute;
+      top: 15px;
+      left: 260px;
+      background-color: #0a66c2;
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: left 0.3s ease, transform 0.3s ease;
+      z-index: 1100;
+    }
+
+    .sidebar.collapsed + .toggle-btn {
+      left: 60px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo img {
+      height: 30px;
+      transition: opacity 0.3s;
+    }
+
+    .sidebar.collapsed .logo img {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .profile {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .profile img {
+      width: 50px;
+    }
+
+    .profile h3 {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #333;
+      transition: opacity 0.3s;
+    }
+
+    body.dark-mode .profile h3 {
+      color: #e1e1e1;
+    }
+
+    .sidebar.collapsed .profile h3 {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .nav-section {
+      margin-top: 10px;
+    }
+
+    .nav-section h4 {
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 10px 20px;
+      color: #666;
+    }
+
+    body.dark-mode .nav-section h4 {
+      color: #aaa;
+    }
+
+    .nav-links {
+      list-style: none;
+    }
+
+    .nav-links li {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      cursor: pointer;
+      color: #333;
+      transition: background 0.2s;
+    }
+
+    body.dark-mode .nav-links li {
+      color: #ddd;
+    }
+
+    .nav-links li:hover {
+      background-color: #f1f1f1;
+    }
+
+    body.dark-mode .nav-links li:hover {
+      background-color: #333;
+    }
+
+    .nav-links li.active {
+      background-color: #e6f0fa;
+      color: #0a66c2;
+      font-weight: bold;
+    }
+
+    .nav-links i {
+      width: 25px;
+      font-size: 1.1rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+
+    .nav-links span {
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar.collapsed .nav-links span {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    main {
+      margin-left: 260px;
+      padding: 2rem;
+      transition: margin-left 0.3s ease;
+      flex: 1;
+    }
+
+    .sidebar.collapsed ~ main {
+      margin-left: 60px;
+    }
+
+    .welcome-box {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-mode .welcome-box {
+      background-color: #2c2c2c;
+      border-color: #444;
+      color: #e1e1e1;
+    }
+
+    .theme-toggle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px;
+    }
+
+    .toggle-switch {
+      background-color: #e0e0e0;
+      border-radius: 20px;
+      width: 90px;
+      height: 30px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    body.dark-mode .toggle-switch {
+      background-color: #444;
+    }
+
+    .toggle-switch .toggle-option {
+      flex: 1;
+      text-align: center;
+      font-size: 0.72rem;
+      line-height: 30px;
+      color: #555;
+      z-index: 1;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.dark-mode .toggle-option {
+      color: #ddd;
+    }
+
+    .switch-thumb {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 22px;
+      height: 22px;
+      background-color: white;
+      border-radius: 50%;
+      transition: left 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    body.dark-mode .switch-thumb {
+      left: 64px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        width: 260px;
+        position: absolute;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar.collapsed {
+        width: 260px;
+      }
+
+      main {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn Logo" />
+    </div>
+
+    <div class="profile">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="Profile" />
+      <h3>Aliza Mangi</h3>
+    </div>
+
+    <div class="nav-section">
+      <ul class="nav-links">
+        <li><i class="fas fa-home"></i><span>Home</span></li>
+        <li><i class="fas fa-user-friends"></i><span>My Network</span></li>
+        <li><i class="fas fa-briefcase"></i><span>Jobs</span></li>
+        <li><i class="fas fa-comment-dots"></i><span>Messaging</span></li>
+        <li><i class="fas fa-bell"></i><span>Notifications</span></li>
+      </ul>
+    </div>
+
+    <div class="nav-section">
+      <h4>Groups & Events</h4>
+      <ul class="nav-links">
+        <li><i class="fas fa-users"></i><span>Your Groups</span></li>
+        <li><i class="fas fa-calendar"></i><span>Events</span></li>
+      </ul>
+    </div>
+
+    <div class="nav-section">
+      <h4>Discover More</h4>
+      <ul class="nav-links">
+        <li><i class="fas fa-hashtag"></i><span>Followed Hashtags</span></li>
+        <li><i class="fas fa-compass"></i><span>Discover</span></li>
+      </ul>
+    </div>
+
+    <div class="theme-toggle">
+      <div class="toggle-switch" onclick="toggleTheme()">
+        <div class="switch-thumb"></div>
+        <div class="toggle-option"><i class="fas fa-sun"></i> Light</div>
+        <div class="toggle-option"><i class="fas fa-moon"></i> Dark</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+    <i class="fas fa-angle-double-left"></i>
+  </button>
+
+  <main>
+    <div class="welcome-box">
+      <h2>Welcome to LinkedIn, Aliza Mangi</h2>
+    </div>
+  </main>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.querySelector(".toggle-btn i");
+
+    function toggleSidebar() {
+      sidebar.classList.toggle("collapsed");
+      toggleBtn.classList.toggle("fa-angle-double-left");
+      toggleBtn.classList.toggle("fa-angle-double-right");
+    }
+
+    window.addEventListener("click", function (e) {
+      if (
+        window.innerWidth <= 768 &&
+        !sidebar.contains(e.target) &&
+        !e.target.closest(".toggle-btn") &&
+        sidebar.classList.contains("open")
+      ) {
+        sidebar.classList.remove("open");
+      }
+    });
+
+    document.querySelectorAll('.nav-links li').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('.nav-links li').forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+
+        if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+          sidebar.classList.remove('open');
+        }
+      });
+    });
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

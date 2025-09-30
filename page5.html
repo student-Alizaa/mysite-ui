@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aliza Mangi - Web Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+:root {
+    --primary-color: #13ADC7;
+    --secondary-color: #667eea;
+    --accent-color: #89f7fe;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f0f9ff;
+    --border-color: #d1f2ff;
+    --shadow: 0 4px 6px -1px rgba(19, 173, 199, 0.15);
+    --shadow-hover: 0 10px 15px -3px rgba(19, 173, 199, 0.25);
+}
+
+[data-theme="dark"] {
+    --primary-color: #8be9fd;
+    --secondary-color: #50fa7b;
+    --accent-color: #6272a4;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --bg-primary: #0f0f23;
+    --bg-secondary: #1a1a2e;
+    --border-color: #16213e;
+    --shadow: 0 4px 6px -1px rgba(139, 233, 253, 0.2);
+    --shadow-hover: 0 10px 15px -3px rgba(139, 233, 253, 0.4);
+}
+
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(180deg, #f8fafc, #e2e8f0);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a, #1e40af);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="1" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            margin: 0 auto 2rem;
+            background: linear-gradient(45deg, #0f172a, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .theme-toggle i {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+        }
+
+        .contact {
+            background: linear-gradient(90deg, #1e3a8a, #1e40af);
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            padding: 3rem 0;
+            background: linear-gradient(180deg, #f1f5f9, #e2e8f0);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .section {
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .section:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+            border-left-color: var(--accent-color);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            font-size: 1.2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .skill-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent-color);
+        }
+
+        .skill-badge:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            box-shadow: var(--shadow-hover);
+        }
+
+        .experience-item,
+        .education-item {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .experience-item::before,
+        .education-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .item-header {
+            margin-bottom: 1rem;
+        }
+
+        .item-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .item-company,
+        .item-institution {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .item-duration {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .item-description {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-description li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .item-description li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .project-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .project-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-left-color: var(--accent-color);
+            background: var(--bg-primary);
+        }
+
+        .project-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-hover);
+            border: 1px solid var(--accent-color);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            transform: translateY(-2px) scale(1.1);
+        }
+
+        .download-cv {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            border: 1px solid var(--accent-color);
+        }
+
+        .download-cv:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem 0;
+            }
+
+            .contact-info {
+                gap: 1rem;
+            }
+
+            .contact-item {
+                font-size: 0.875rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .profile-img {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .header {
+                padding: 3rem 0;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="theme-icon"></i>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="profile-img">AM</div>
+                <h1>Aliza Mangi</h1>
+                <p class="subtitle">Full Stack Developer | UI/UX Designer</p>
+                <p class="tagline">Creative full-stack developer specializing in modern web technologies and user-centered design. Passionate about building scalable applications that deliver exceptional user experiences through clean code and innovative solutions.</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="contact">
+        <div class="container">
+            <div class="contact-info">
+                <a href="mailto:aliza.mangi@email.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    aliza.mangi@email.com
+                </a>
+                <a href="https://linkedin.com/in/alizamangi" class="contact-item" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/alizamangi" class="contact-item" target="_blank">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="tel:+1234567890" class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    +1 (234) 567-8900
+                </a>
+                <span class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Karachi, Pakistan
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="main-content">
+            <aside class="sidebar">
+                <section class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-user"></i>
+                        About Me
+                    </h2>
+                    <p>I'm a dedicated full-stack developer with expertise in both frontend and backend technologies. My passion lies in creating seamless user experiences through thoughtful design and robust development practices. With a strong foundation in modern frameworks and a keen eye for UI/UX design, I bring ideas to life with pixel-perfect precision. I thrive in collaborative environments and am always excited to tackle new challenges that push the boundaries of web development.</p>
+                    <a href="#" class="download-cv" onclick="downloadCV()">
+                        <i class="fas fa-download"></i>
+                        Download CV
+                    </a>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-cogs"></i>
+                        Skills
+                    </h2>
+                    <div class="skills-grid">
+                        <div class="skill-badge">HTML5</div>
+                        <div class="skill-badge">CSS3</div>
+                        <div class="skill-badge">JavaScript</div>
+                        <div class="skill-badge">React</div>
+                        <div class="skill-badge">Vue.js</div>
+                        <div class="skill-badge">Node.js</div>
+                        <div class="skill-badge">Python</div>
+                        <div class="skill-badge">MongoDB</div>
+                        <div class="skill-badge">PostgreSQL</div>
+                        <div class="skill-badge">Figma</div>
+                        <div class="skill-badge">Adobe XD</div>
+                        <div class="skill-badge">Git</div>
+                        <div class="skill-badge">Docker</div>
+                        <div class="skill-badge">AWS</div>
+                        <div class="skill-badge">UI/UX Design</div>
+                        <div class="skill-badge">Agile</div>
+                        <div class="skill-badge">Creative Problem Solving</div>
+                        <div class="skill-badge">Team Leadership</div>
+                    </div>
+                </section>
+            </aside>
+
+            <div class="content">
+                <section class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-briefcase"></i>
+                        Experience
+                    </h2>
+                    
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-title">Senior Full Stack Developer</div>
+                            <div class="item-company">InnovateTech Solutions</div>
+                            <div class="item-duration">August 2024 - Present</div>
+                        </div>
+                        <ul class="item-description">
+                            <li>Lead development of scalable web applications using React, Node.js, and MongoDB</li>
+                            <li>Designed and implemented RESTful APIs serving 10K+ daily active users</li>
+                            <li>Collaborated with design team to create intuitive user interfaces using Figma and Adobe XD</li>
+                            <li>Mentored junior developers and conducted code reviews to maintain high code quality</li>
+                            <li>Optimized application performance resulting in 40% faster load times</li>
+                        </ul>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-title">Full Stack Developer</div>
+                            <div class="item-company">Creative Digital Agency</div>
+                            <div class="item-duration">January 2024 - July 2024</div>
+                        </div>
+                        <ul class="item-description">
+                            <li>Developed custom web applications using Vue.js, Python Django, and PostgreSQL</li>
+                            <li>Created responsive, mobile-first designs that increased user engagement by 35%</li>
+                            <li>Implemented CI/CD pipelines using Docker and AWS for seamless deployments</li>
+                            <li>Worked closely with clients to gather requirements and deliver tailored solutions</li>
+                        </ul>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-title">Frontend Developer & UI/UX Designer</div>
+                            <div class="item-company">StartupHub Inc.</div>
+                            <div class="item-duration">June 2023 - December 2023</div>
+                        </div>
+                        <ul class="item-description">
+                            <li>Designed user interfaces and prototypes using modern design principles</li>
+                            <li>Built responsive web applications with React and modern CSS frameworks</li>
+                            <li>Conducted user research and usability testing to improve product design</li>
+                            <li>Collaborated in agile development environment with cross-functional teams</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-graduation-cap"></i>
+                        Education
+                    </h2>
+                    
+                    <div class="education-item">
+                        <div class="item-header">
+                            <div class="item-title">Bachelor of Science in Computer Science</div>
+                            <div class="item-institution">University of Karachi</div>
+                            <div class="item-duration">2020 - 2024</div>
+                        </div>
+                        <p>Specialized in Software Engineering and Human-Computer Interaction. Graduated Magna Cum Laude with a GPA of 3.8/4.0. Led the Web Development Club and organized multiple tech workshops. Completed capstone project on AI-powered user interface design.</p>
+                    </div>
+
+                    <div class="education-item">
+                        <div class="item-header">
+                            <div class="item-title">Full Stack Development Certification</div>
+                            <div class="item-institution">freeCodeCamp</div>
+                            <div class="item-duration">2023</div>
+                        </div>
+                        <p>Comprehensive program covering modern web development technologies including React, Node.js, Express, MongoDB, and responsive design principles. Completed 300+ hours of hands-on projects and algorithm challenges.</p>
+                    </div>
+
+                    <div class="education-item">
+                        <div class="item-header">
+                            <div class="item-title">UI/UX Design Specialization</div>
+                            <div class="item-institution">Google UX Design Certificate</div>
+                            <div class="item-duration">2023</div>
+                        </div>
+                        <p>Professional certificate program focusing on user-centered design principles, wireframing, prototyping, and usability testing. Completed real-world design projects using Figma and Adobe Creative Suite.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-code"></i>
+                        Projects
+                    </h2>
+                    
+                    <div class="projects-grid">
+                        <div class="project-item">
+                            <h3 class="project-title">FinanceTracker Pro</h3>
+                            <p class="project-description">A comprehensive personal finance management application built with React, Node.js, and MongoDB. Features real-time expense tracking, budget planning, and interactive data visualizations.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                    GitHub
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Live Demo
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="project-item">
+                            <h3 class="project-title">EcoCommerce Platform</h3>
+                            <p class="project-description">Sustainable e-commerce platform built with Vue.js and Python Django. Includes user authentication, payment processing, inventory management, and eco-friendly product recommendations.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                    GitHub
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Live Demo
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="project-item">
+                            <h3 class="project-title">AI-Powered Recipe Finder</h3>
+                            <p class="project-description">Intelligent recipe recommendation system using machine learning algorithms. Built with React frontend, Python Flask API, and PostgreSQL database with personalized user preferences.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                    GitHub
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Live Demo
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="project-item">
+                            <h3 class="project-title">CollabSpace - Team Management Tool</h3>
+                            <p class="project-description">Modern team collaboration platform with real-time messaging, project tracking, and file sharing. Features responsive design created in Figma and implemented with React and Socket.io.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                    GitHub
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <button class="scroll-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function handleScrollButton() {
+            const scrollTopBtn = document.querySelector('.scroll-top');
+            
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        }
+
+       
+        function downloadCV() {
+            alert('CV download feature would be implemented here. In a real scenario, this would download a PDF file.');
+
+        }
+
+         function smoothScroll() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+          function setupIntersectionObserver() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+            smoothScroll();
+            setupIntersectionObserver();
+            
+           
+            window.addEventListener('scroll', handleScrollButton);
+           
+            const skillBadges = document.querySelectorAll('.skill-badge');
+            skillBadges.forEach(badge => {
+                badge.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05) rotate(2deg)';
+                });
+                
+                badge.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+
+           
+            const tagline = document.querySelector('.tagline');
+            const originalText = tagline.textContent;
+            tagline.textContent = '';
+            
+            let i = 0;
+            function typeWriter() {
+                if (i < originalText.length) {
+                    tagline.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            
+            setTimeout(typeWriter, 1000);
+        });
+
+      
+        document.addEventListener('mousemove', function(e) {
+            const cursor = document.querySelector('.cursor');
+            if (!cursor) {
+                const newCursor = document.createElement('div');
+                newCursor.className = 'cursor';
+                newCursor.style.cssText = `
+                    position: fixed;
+                    width: 20px;
+                    height: 20px;
+                    border: 2px solid var(--primary-color);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 9999;
+                    transition: transform 0.1s ease;
+                    display: none;
+                `;
+                document.body.appendChild(newCursor);
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.header');
+            const speed = scrolled * 0.5;
+            
+            if (parallax) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
