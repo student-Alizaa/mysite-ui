@@ -19,7 +19,7 @@ pipeline {
         stage('Deploy to Apache') {
             steps {
                 sh '''
-                    rsync -av --exclude ".git/" --exclude "Jenkinsfile" ${WORKSPACE}/ ${USERNAME}@${SERVER}:${DEPLOY_PATH}/
+                    rsync -avz --delete --exclude ".git/" --exclude "Jenkinsfile" ${WORKSPACE}/ ${USERNAME}@${SERVER}:${DEPLOY_PATH}/
                     ssh ${USERNAME}@${SERVER} "sudo systemctl restart apache2"
                 '''
             }
